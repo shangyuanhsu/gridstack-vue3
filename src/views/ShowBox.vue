@@ -1,52 +1,53 @@
 <template>
   <div class="showBox">
-    <button type="button">Add Widget</button>
-    {{ info }}
     <section class="grid-stack"></section>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
+import { useStore } from "vuex";
 import { GridStack } from "gridstack";
 import "gridstack/dist/h5/gridstack-dd-native";
 export default {
   name: "ShowBox",
   props: {},
   setup() {
-    let info = ref("");
+    const store = useStore();
     let grid = null;
-    const items = [
-      { id: 0, x: 0, y: 0, w: 4, h: 3, noResize: true, content: `<p>小1</p>` },
-      { id: 1, x: 4, y: 0, w: 4, h: 3, noResize: true, content: `<p>小2</p>` },
-      { id: 2, x: 8, y: 0, w: 4, h: 3, noResize: true, content: `<p>小3</p>` },
-      { id: 3, x: 0, y: 3, w: 12, h: 4, noResize: true, content: `<p>大4</p>` },
-      { id: 4, x: 0, y: 7, w: 6, h: 4, noResize: true, content: `<p>中5</p>` },
-      { id: 5, x: 6, y: 7, w: 6, h: 4, noResize: true, content: `<p>中6</p>` },
-    ];
+    let items = [];
 
     onMounted(() => {
+      items = store.state.box_item.map((item) => item);
+
       grid = GridStack.init({
         float: true,
-        cellHeight: "80px",
         minRow: 1,
+        minWidth: 500,
+        column: 12,
+        cellHeight: "80px",
       });
 
-      grid.on("dragstop", (event, element) => {
-        const node = element.gridstackNode;
-        info.value = `you just dragged node #${node.id} to ${node.x},${node.y}`;
+      grid.on("dragstop", () => {
+        // (event, element)
+        // const node = element.gridstackNode;
+        // console.log(grid.engine.nodes);
 
         items.forEach((box) => {
-          if (box.id == node.id) {
-            box.x = node.x;
-            box.y = node.y;
-          }
+          const new_node = grid.engine.nodes.filter(
+            (item) => box.id === item.id
+          )[0];
+          box.x = new_node.x;
+          box.y = new_node.y;
         });
-        console.log(items);
+        store.dispatch("sava_box_data", items);
       });
+
       items.forEach((element) => {
         addNewWidget(element);
       });
+
+     
     });
 
     const addNewWidget = (item) => {
@@ -55,14 +56,14 @@ export default {
     };
 
     return {
-      info,
       addNewWidget,
     };
   },
 };
 </script>
 
-<style>
+<style scope>
+@import "../../node_modules/gridstack/dist/gridstack.min.css";
 
 .btn-primary {
   color: #fff;
@@ -88,7 +89,7 @@ h1 {
 .grid-stack {
   width: 900px;
   min-height: 80vh;
-  margin: 0 auto;
+  margin: 20px auto 50px auto;
   border: 1px dotted gray;
 }
 
@@ -125,5 +126,24 @@ h1 {
 }
 .sidebar .grid-stack-item .grid-stack-item-content {
   background: none;
+}
+
+.grid-stack .title {
+  background-color: rgb(202, 202, 202);
+  padding: 5px 10px;
+}
+.card table {
+  margin: 5px auto;
+  border-collapse: collapse;
+  width: 90%;
+}
+.card table,
+.card tr,
+.card td {
+  border-bottom: 1px solid gray;
+  text-align: center;
+}
+.card td {
+  padding: 5px;
 }
 </style>
