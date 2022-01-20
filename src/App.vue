@@ -2,7 +2,7 @@
   <div class="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/EditBox">EditBoxData</router-link> |
+      <router-link to="/NewBox">NewBoxData</router-link> |
       <router-link to="/ShowBox">ShowBox</router-link>
     </div>
     <router-view />
@@ -39,7 +39,7 @@ body{
   margin: 0 auto;
 }
 #nav {
-  margin: 20px auto;
+  margin: 30px auto 50px auto;
 }
 #nav a {
   margin: 0 10px;

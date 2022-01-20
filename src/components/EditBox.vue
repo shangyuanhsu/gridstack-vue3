@@ -1,6 +1,5 @@
 <template>
   <div class="editBox">
-    <!-- <div class="new_box">&#43;</div> -->
     <section>
       <!-- template size -->
       <div class="btn_and_tip">
@@ -162,16 +161,17 @@ export default {
       console.log(grid.engine.nodes[0]);
       grid.engine.nodes[0].content = `
           <div class="card">
-          <p class="title">${title.value}</p>`;
+          <div class="title">${title.value}
+             <p class="title_footer"><span>${creator.value}</span><span>2022-01-20</span></p></div>
+       `;
       if (textarea_text.value != "") {
         const replace_textarea_text = textarea_text.value.replace(
           /\n/g,
           "<br>"
         );
-
         grid.engine.nodes[0].content += `<p class="textarea_con">${replace_textarea_text}</p>`;
       }
-      grid.engine.nodes[0].content += `   <p class="title_footer"><span>${creator.value}</span><span>2022-01-20</span></p>
+      grid.engine.nodes[0].content += `   
           </div>`;
 
       add_new_widget(which_size.value, grid.engine.nodes[0].h);
@@ -185,9 +185,12 @@ export default {
         );
         grid.engine.nodes[0].content = `
           <div class="card">
-          <p class="title">${title.value}</p>
+          <div class="title">${title.value}
+           <p class="title_footer"><span>${creator.value}</span><span>2022-01-20</span></div>
+          </p>
+          
           <p class="textarea_con">${replace_textarea_text}</p>
-          <p class="title_footer"><span>${creator.value}</span><span>2022-01-20</span></p>
+         
           </div>`;
 
         add_new_widget(which_size.value, grid.engine.nodes[0].h);
@@ -229,8 +232,10 @@ export default {
       } else {
         new_box_grid.node.content = `
           <div class="card">
-          <p class="title">${title.value}</p>
+          <div class="title">${title.value}
            <p class="title_footer"><span>${creator.value}</span><span>2022-01-20</span></p>
+           </div>
+          
           </div>`;
       }
       grid.removeAll(true);
@@ -279,16 +284,7 @@ export default {
   max-width: 900px;
   margin: 0 auto;
 }
-.new_box {
-  text-align: center;
-  font-size: 30px;
-  font-weight: bolder;
-  padding: 10px;
-  color: rgb(204, 203, 203);
-  border: 2px dotted rgb(204, 203, 203);
-  margin: 30px 0;
-  cursor: pointer;
-}
+
 .editBox section.grid-stack {
   margin: 20px 0 30px 0;
 }
@@ -408,14 +404,11 @@ textarea {
   line-height: 1.5em;
 }
 .title_footer {
-  width: 100%;
-  background-color: rgb(202, 202, 202);
-  padding: 5px 10px;
+  padding: 5px 00px;
   word-break: break-word;
-  position: absolute;
-  bottom: 0;
   display: flex;
   justify-content: space-between;
   font-size: 12px;
+  flex-direction: column;
 }
 </style>

@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import ShowBox from '../views/ShowBox.vue'
-import EditBox from '../views/EditBox.vue'
+import NewBox from '../views/NewBox.vue'
 
 
 const routes = [
@@ -17,9 +17,9 @@ const routes = [
     component: ShowBox
   },
   {
-    path: '/EditBox',
-    name: 'EditBox.vue',
-    component: EditBox
+    path: '/NewBox',
+    name: 'NewBox.vue',
+    component: NewBox
   },
 
 ]

@@ -132,6 +132,12 @@ h1 {
   padding: 5px 10px;
   word-break: break-word;
   font-size: 18px;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 .card table {
   margin: 5px auto;
