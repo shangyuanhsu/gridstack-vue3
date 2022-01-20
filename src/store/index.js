@@ -18,38 +18,15 @@ export default createStore({
         //==================================================
         get_box_data({ commit }) {
             const items = [
-                { id: 0, x: 0, y: 11, w: 4, h: 4, noResize: true, content: 
-                    `<div class="card">
+                {
+                    id: 0, x: 0, y: 11, w: 4, h: 4, noResize: true, content:
+                        `<div class="card">
                     <p class="title">小1</p>
-                     <table>
-                     <tr>
-                     <td>A</td>
-                     <td>B</td></tr>
-                     <tr>
-                     <td>A</td>
-                     <td>B</td></tr>
-                     <tr>
-                     <td>A</td>
-                     <td>B</td></tr>
-                     <tr>
-                     <td>A</td>
-                     <td>B</td></tr>
-                     <tr>
-                     <td>A</td>
-                     <td>B</td></tr>
-                     <tr>
-                     <td>A</td>
-                     <td>B</td></tr>
-                     <tr>
-                     <td>A</td>
-                     <td>B</td></tr>
-                     <tr>
-                     <td>A</td>
-                     <td>B</td></tr>
-                     </table> 
+                    
                      </div>
-                    `, 
-                    title: 'title', manager: 'jack' },
+                    `,
+                    title: 'title', manager: 'jack'
+                },
                 { id: 1, x: 4, y: 0, w: 4, h: 3, noResize: true, content: `<p class="title">小2</p>`, title: 'title', manager: 'jack' },
                 { id: 2, x: 8, y: 0, w: 4, h: 3, noResize: true, content: `<p class="title">小3</p>`, title: 'title', manager: 'jack' },
                 { id: 3, x: 0, y: 3, w: 12, h: 4, noResize: true, content: `<p class="title">大4</p>`, title: 'title', manager: 'jack' },

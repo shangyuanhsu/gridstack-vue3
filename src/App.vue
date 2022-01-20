@@ -12,6 +12,7 @@
 <script>
 import { useStore } from "vuex";
 import { onMounted } from "vue";
+
 export default {
   name: "App",
   setup() {

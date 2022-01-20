@@ -44,19 +44,17 @@ export default {
       });
 
       items.forEach((element) => {
-        addNewWidget(element);
+        add_new_widget(element);
       });
-
-     
     });
 
-    const addNewWidget = (item) => {
+    const add_new_widget = (item) => {
       const node = item;
       grid.addWidget(node);
     };
 
     return {
-      addNewWidget,
+      // add_new_widget,
     };
   },
 };
@@ -86,14 +84,14 @@ h1 {
   margin-bottom: 0.5rem;
 }
 
-.grid-stack {
+.showBox .grid-stack {
   width: 900px;
   min-height: 80vh;
   margin: 20px auto 50px auto;
   border: 1px dotted gray;
 }
 
-.grid-stack-item-content {
+.showBox .grid-stack-item-content {
   background-color: #e5e5e5;
   border-radius: 8px;
 }
@@ -129,8 +127,10 @@ h1 {
 }
 
 .grid-stack .title {
+  font-weight: bolder;
   background-color: rgb(202, 202, 202);
   padding: 5px 10px;
+  word-break: break-word;
 }
 .card table {
   margin: 5px auto;
