@@ -23,9 +23,9 @@
             {
               width:
                 which_progress == 0
-                  ? '100%'
+                  ? '75%'
                   : which_progress == 1
-                  ? '50%'
+                  ? '30%'
                   : '0%',
             },
           ]"
@@ -161,7 +161,8 @@ export default {
       console.log(grid.engine.nodes[0]);
       grid.engine.nodes[0].content = `
           <div class="card">
-          <div class="title">${title.value}
+          <div class="title">
+              <p class="title_header">${title.value}</p>
              <p class="title_footer"><span>${creator.value}</span><span>2022-01-20</span></p></div>
        `;
       if (textarea_text.value != "") {
@@ -185,7 +186,8 @@ export default {
         );
         grid.engine.nodes[0].content = `
           <div class="card">
-          <div class="title">${title.value}
+          <div class="title">
+              <p class="title_header">${title.value}</p>
            <p class="title_footer"><span>${creator.value}</span><span>2022-01-20</span></div>
           </p>
           
@@ -232,7 +234,8 @@ export default {
       } else {
         new_box_grid.node.content = `
           <div class="card">
-          <div class="title">${title.value}
+          <div class="title">
+          <p class="title_header">${title.value}</p>
            <p class="title_footer"><span>${creator.value}</span><span>2022-01-20</span></p>
            </div>
           
@@ -380,7 +383,7 @@ button {
   width: 100%;
   opacity: 0.5;
   cursor: pointer;
-  transition: opacity 0.5s;
+  transition: opacity 0.3s;
 }
 .select_con > div > img:hover,
 .select_con > div > img.select_con_click {
@@ -397,18 +400,27 @@ textarea {
   width: 45%;
   height: 200px;
   resize: none;
+  line-height: 1.5em;
+  padding: 5px;
 }
 .textarea_con {
   padding: 10px;
   word-break: break-word;
   line-height: 1.5em;
 }
+.title_header {
+  word-break: break-all;
+  padding: 10px 20px;
+    font-size: 18px;
+}
 .title_footer {
-  padding: 5px 00px;
+  min-width: 100px;
+  padding: 10px 20px;
   word-break: break-word;
   display: flex;
   justify-content: space-between;
   font-size: 12px;
   flex-direction: column;
+  text-align: right;
 }
 </style>
