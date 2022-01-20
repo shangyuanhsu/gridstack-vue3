@@ -412,7 +412,7 @@ textarea {
   background-color: rgb(202, 202, 202);
   padding: 5px 10px;
   word-break: break-word;
-  position: sticky;
+  position: absolute;
   bottom: 0;
   display: flex;
   justify-content: space-between;
