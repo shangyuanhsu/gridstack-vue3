@@ -405,6 +405,7 @@ textarea {
 .textarea_con {
   padding: 10px;
   word-break: break-word;
+  line-height: 1.5em;
 }
 .title_footer {
   width: 100%;
@@ -415,5 +416,6 @@ textarea {
   bottom: 0;
   display: flex;
   justify-content: space-between;
+  font-size: 12px;
 }
 </style>

@@ -131,6 +131,7 @@ h1 {
   background-color: rgb(202, 202, 202);
   padding: 5px 10px;
   word-break: break-word;
+  font-size: 18px;
 }
 .card table {
   margin: 5px auto;
