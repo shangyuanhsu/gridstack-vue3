@@ -5,8 +5,9 @@
 </template>
 
 <script>
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
+import Chart from "chart.js/auto";
 import { GridStack } from "gridstack";
 import "gridstack/dist/h5/gridstack-dd-native";
 export default {
@@ -16,7 +17,7 @@ export default {
     const store = useStore();
     let grid = null;
     let items = [];
-
+    var myChart = ref(null);
     onMounted(() => {
       items = store.state.box_item.map((item) => item);
 
@@ -34,9 +35,7 @@ export default {
         // console.log(grid.engine.nodes);
 
         items.forEach((box) => {
-          const new_node = grid.engine.nodes.filter(
-            (item) => box.id === item.id
-          )[0];
+          const new_node = grid.engine.nodes.filter((item) => box.id === item.id)[0];
           box.x = new_node.x;
           box.y = new_node.y;
         });
@@ -45,6 +44,45 @@ export default {
 
       items.forEach((element) => {
         add_new_widget(element);
+      });
+
+      var ctx = document.querySelector(".myChartStatistics").getContext("2d");
+
+      myChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          datasets: [
+            {
+              label: "# of Votes",
+              data: [10, 20, 30, 20, 10, 10],
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(153, 102, 255, 0.2)",
+                "rgba(255, 159, 64, 0.2)",
+              ],
+              borderColor: [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
       });
     });
 
@@ -55,12 +93,13 @@ export default {
 
     return {
       // add_new_widget,
+      myChart,
     };
   },
 };
 </script>
 
-<style scope>
+<style>
 @import "../../node_modules/gridstack/dist/gridstack.min.css";
 
 .btn-primary {

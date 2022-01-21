@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "chart.js": "^3.7.0",
     "core-js": "^3.6.5",
     "gridstack": "^5.0.0",
     "vue": "^3.0.0",
