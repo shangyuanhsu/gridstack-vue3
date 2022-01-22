@@ -85,7 +85,7 @@ export default createStore({
         get_chart_data({ commit }) {
             const chart_arr = [
                 {
-                    name: 'A-data',
+                    name: 'Color data',
                     type: "",
                     data: {
                         labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
@@ -113,14 +113,10 @@ export default createStore({
                             },
                         ],
                     },
-                    options: {
-                        plugins: {
-                            // legend: false,
-                        },
-                    },
+                   
                 },
                 {
-                    name: 'B-data',
+                    name: 'Year Data',
                     type: "",
                     data: {
                         labels: ["2021", "2022", "2023", "2024", "2025"],
@@ -146,14 +142,10 @@ export default createStore({
                             },
                         ],
                     },
-                    options: {
-                        plugins: {
-                            // legend: false,
-                        },
-                    },
+                    
                 },
                 {
-                    name: 'C-data',
+                    name: 'Boolean Data',
                     type: "",
                     data: {
                         labels: ["Yes", "No"],
@@ -173,11 +165,7 @@ export default createStore({
                             },
                         ],
                     },
-                    options: {
-                        plugins: {
-                            // legend: false,
-                        },
-                    },
+                   
                 }
             ];
             commit('change_chart_data', chart_arr);

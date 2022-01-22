@@ -85,14 +85,14 @@
           <div v-if="selected_txt == 'text'">
             <textarea v-model="textarea_text" @change="change_content"></textarea>
           </div>
-          <div v-else-if="selected_txt == 'statistics' || selected_txt == 'pie-chart'">
+          <div v-else-if="selected_txt == 'bar' || selected_txt == 'pie'">
             <select v-model="select_index">
               <option v-for="(item, index) in chart_item.arr" :key="index" :value="index">
                 {{ item.name }}
               </option>
             </select>
 
-            <button @click="aaa">click</button>
+            <button @click="add_chart">Add Chart</button>
           </div>
         </div>
 
@@ -149,6 +149,7 @@ export default {
     const month = date.getMonth() + 1;
     const day = date.getDate();
     const created_day = `${year}-${month}-${day}`; //日期形式
+
     const items = reactive({ arr: [] }); //目前有創建的box data
     const chart_item = reactive({ arr: [] }); //目前有創建的box data
     const new_box_grid = reactive({
@@ -175,12 +176,12 @@ export default {
       },
       {
         id: 1,
-        name: "pie-chart",
+        name: "pie",
         src: "pie-chart.png",
       },
       {
         id: 2,
-        name: "statistics",
+        name: "bar",
         src: "statistics.png",
       },
       {
@@ -212,7 +213,7 @@ export default {
 
     /**
      * 下一步上一步
-     *  param is_step : Boolean : true:下一步/false:上一步
+     *  @param is_step : Boolean : true:下一步/false:上一步
      **/
     const control_step = (is_step) => {
       if (is_step) {
@@ -297,15 +298,8 @@ export default {
 
       add_new_widget(which_size.value, grid.engine.nodes[0].h);
     };
-    const aaa = () => {
-      let type = "pie";
-      if (selected_txt.value == "pie-chart") {
-        type = "pie";
-      }
-
-      if (selected_txt.value == "statistics") {
-        type = "bar";
-      }
+    const add_chart = () => {
+      let type = selected_txt.value;
 
       if (myChart) {
         myChart.destroy();
@@ -319,8 +313,8 @@ export default {
     };
     /**
      * 產生box
-     * param size : number : 0:small/1:middle/2:large
-     * param h : number : 如果沒有換大小但有拉高度的狀況留著高
+     * @param size : number : 0:small/1:middle/2:large
+     * @param h : number : 如果沒有換大小但有拉高度的狀況留著高
      **/
     const add_new_widget = (size, h = 0) => {
       which_size.value = size;
@@ -405,7 +399,7 @@ export default {
       control_step,
       chart_item,
       select_index,
-      aaa,
+      add_chart,
     };
   },
 };
