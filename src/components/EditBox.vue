@@ -85,14 +85,17 @@
           <div v-if="selected_txt == 'text'">
             <textarea v-model="textarea_text" @change="change_content"></textarea>
           </div>
+          <!-- chart -->
           <div v-else-if="selected_txt == 'bar' || selected_txt == 'pie'">
             <select v-model="select_index">
               <option v-for="(item, index) in chart_item.arr" :key="index" :value="index">
                 {{ item.name }}
               </option>
             </select>
-
             <button @click="add_chart">Add Chart</button>
+          </div>
+          <div v-else-if="selected_txt == 'tablet'">
+            <TabletForm :data="table_data" @go_show_table="change_table_data" />
           </div>
         </div>
 
@@ -131,15 +134,18 @@
 <script>
 import { ref, reactive, onMounted } from "vue";
 import { useStore } from "vuex";
+import router from "@/router";
 import Chart from "chart.js/auto";
 import { GridStack } from "gridstack";
 import "gridstack/dist/h5/gridstack-dd-native";
 import Button from "@/components/Button.vue";
+import TabletForm from "@/components/TabletForm.vue";
 
 export default {
   name: "EditBox",
   components: {
     Button,
+    TabletForm,
   },
   props: {},
   setup() {
@@ -195,6 +201,18 @@ export default {
     const select_index = ref(0);
     let grid = null; //創建可以使用box的套件
     var myChart = null;
+    const table_data = reactive({
+      arr: [
+        {
+          index_item: 0,
+          list: [{ name: "Edit content" }],
+        },
+        {
+          index_item: 1,
+          list: [{ name: "Edit content" }],
+        },
+      ],
+    });
 
     onMounted(() => {
       items.arr = store.state.box_item.map((item) => item);
@@ -301,6 +319,8 @@ export default {
 
       add_new_widget(which_size.value, grid.engine.nodes[0].h);
     };
+
+    //產生chart
     const add_chart = () => {
       let type = selected_txt.value;
 
@@ -314,6 +334,7 @@ export default {
       console.log(config);
       myChart = new Chart(ctx, config);
     };
+
     /**
      * 產生box
      * @param size : number : 0:small/1:middle/2:large
@@ -364,27 +385,63 @@ export default {
       grid.addWidget(new_box_grid.node); //新的bpx
     };
 
+    const change_table_data = (data, table_title) => {
+      table_data.arr = data.arr.map((x) => x);
+      console.log(table_data.arr, table_title);
+      let html = "<table>";
+      html += `<tr>`;
+      table_title.arr.forEach((title, index) => {
+        if (
+          index != 0 &&
+          index != table_title.arr.length - 1 &&
+          index != table_title.arr.length - 2
+        ) {
+          html += `<td>${title.val}</td>`;
+        }
+      });
+      html += `</tr>`;
+      data.arr.forEach((item) => {
+        html += `<tr>`;
+        item.list.forEach((elemet) => {
+          html += `<td>${elemet.name}</td>`;
+        });
+        html += `</tr>`;
+      });
+      html += `
+      </table>
+      `;
+      console.log(html);
+
+      grid.engine.nodes[0].content = `<div class="card"><div class="title"><p class="title_header">${title.value}</p><p class="title_footer"><span>${creator.value}</span><span>${created_day}</span></p></div> ${html}</div>`;
+
+      add_new_widget(which_size.value, grid.engine.nodes[0].h);
+    };
+
     /**
      * 新增並儲存
      **/
     const save = () => {
+      let ans = confirm("Are u sure?");
       //整理格式
-      let node = {
-        id: date.getTime(), //用時間戳
-        x: grid.engine.nodes[0].x,
-        y: grid.engine.nodes[0].y,
-        w: grid.engine.nodes[0].w,
-        h: grid.engine.nodes[0].h,
-        noResize: true,
-        content: grid.engine.nodes[0].content,
-        title: title.value,
-        manager: creator.value,
-        chart: selected_txt.value,
-        chartDate: chart_item.arr[select_index.value].name,
-      };
-      console.log(grid.engine.nodes[0].content);
-      items.arr.push(node);
-      store.dispatch("sava_box_data", items.arr);
+      if (ans) {
+        let node = {
+          id: date.getTime(), //用時間戳
+          x: grid.engine.nodes[0].x,
+          y: grid.engine.nodes[0].y,
+          w: grid.engine.nodes[0].w,
+          h: grid.engine.nodes[0].h,
+          noResize: true,
+          content: grid.engine.nodes[0].content,
+          title: title.value,
+          manager: creator.value,
+          chart: selected_txt.value,
+          chartDate: chart_item.arr[select_index.value].name,
+        };
+        // console.log(grid.engine.nodes[0].content);
+        items.arr.push(node);
+        store.dispatch("sava_box_data", items.arr);
+        router.push("/ShowBox");
+      }
     };
 
     return {
@@ -405,6 +462,8 @@ export default {
       chart_item,
       select_index,
       add_chart,
+      change_table_data,
+      table_data,
     };
   },
 };
@@ -576,5 +635,9 @@ textarea {
 .myChartStatistics {
   width: 90%;
   margin: 16px auto 0 auto;
+}
+select,
+button {
+  padding: 5px 8px;
 }
 </style>

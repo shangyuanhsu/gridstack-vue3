@@ -18,7 +18,7 @@ export default {
     let grid = null;
     const items = reactive({ arr: [] }); //目前有創建的box data
     const chart_item = reactive({ arr: [] }); //會需要的chart資料
-    var myChart = null;
+
     onMounted(() => {
       items.arr = store.state.box_item.map((item) => item);
       chart_item.arr = store.state.chart_data.map((item) => item);
@@ -59,7 +59,7 @@ export default {
 
       config.type = item.chart;
 
-      myChart = new Chart(ctx, config);
+      new Chart(ctx, config);
       count++;
     };
     //產生box
@@ -73,8 +73,7 @@ export default {
     };
 
     return {
-      // add_new_widget,
-      myChart,
+      // myChart,
       chart_item,
     };
   },
@@ -159,7 +158,7 @@ h1 {
   align-items: center;
 }
 .card table {
-  margin: 5px auto;
+  margin: 20px auto;
   border-collapse: collapse;
   width: 90%;
 }
