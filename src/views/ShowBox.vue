@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { reactive, onMounted } from "vue";
 import { useStore } from "vuex";
-// import Chart from "chart.js/auto";
+import Chart from "chart.js/auto";
 import { GridStack } from "gridstack";
 import "gridstack/dist/h5/gridstack-dd-native";
 export default {
@@ -16,11 +16,14 @@ export default {
   setup() {
     const store = useStore();
     let grid = null;
-    let items = [];
-    var myChart = ref(null);
+    const items = reactive({ arr: [] }); //目前有創建的box data
+    const chart_item = reactive({ arr: [] }); //會需要的chart資料
+    var myChart = null;
     onMounted(() => {
-      items = store.state.box_item.map((item) => item);
-
+      items.arr = store.state.box_item.map((item) => item);
+      chart_item.arr = store.state.chart_data.map((item) => item);
+      console.log(items.arr);
+      console.log(chart_item.arr);
       grid = GridStack.init({
         float: true,
         minRow: 1,
@@ -29,32 +32,50 @@ export default {
         cellHeight: "80px",
       });
 
+      // 有移動box就存一下
       grid.on("dragstop", () => {
         // (event, element)
         // const node = element.gridstackNode;
         // console.log(grid.engine.nodes);
-
-        items.forEach((box) => {
+        items.arr.forEach((box) => {
           const new_node = grid.engine.nodes.filter((item) => box.id === item.id)[0];
           box.x = new_node.x;
           box.y = new_node.y;
         });
-        store.dispatch("sava_box_data", items);
+        store.dispatch("sava_box_data", items.arr);
       });
 
-      items.forEach((element) => {
+      //把box渲染到畫面上
+      items.arr.forEach((element) => {
         add_new_widget(element);
       });
     });
+    //產生chart
+    let count = 0;
+    const show_chart = (item) => {
+      var ctx = document.querySelectorAll(".myChartStatistics")[count].getContext("2d");
 
+      let config = chart_item.arr.filter((x) => x.name == item.chartDate)[0];
+
+      config.type = item.chart;
+
+      myChart = new Chart(ctx, config);
+      count++;
+    };
+    //產生box
     const add_new_widget = (item) => {
       const node = item;
+      console.log(item);
       grid.addWidget(node);
+      if (item.chart === "pie" || item.chart === "bar") {
+        show_chart(item);
+      }
     };
 
     return {
       // add_new_widget,
       myChart,
+      chart_item,
     };
   },
 };

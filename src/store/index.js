@@ -25,41 +25,49 @@ export default createStore({
                 {
                     id: 0, x: 0, y: 11, w: 4, h: 4, noResize: true, content:
                         ` <div class="card">
-                             <div class="title">
-                             <p class="title_header">Title</p>
-                             <p class="title_footer">
-                             <span>Sherry Hsu</span><span>2022-01-29</span></p>
-                             </div>
-                          </div>
+                        <div class="title">
+                        <p class="title_header">My Chart</p>
+                        <p class="title_footer"><span>Sherry Hsu</span><span>2022-1-22</span></p>
+                        </div>
+                        <canvas class="myChartStatistics"></canvas>
+                        </div>
                     `,
-                    title: 'Title', manager: 'Sherry Hsu'
+                    title: 'Title', manager: 'Sherry Hsu',
+                    chart: 'pie',
+                    chartDate: 'Boolean Data'
                 },
                 {
-                    id: 1, x: 4, y: 0, w: 4, h: 3, noResize: true, content: `<div class="card">
-                <div class="title">
-                <p class="title_header">Title</p>
-                <p class="title_footer">
-                <span>Harry Potter</span><span>2022-01-29</span></p>
-                </div>
-             </div>`, Title: 'title', manager: 'Harry Potter'
+                    id: 1, x: 4, y: 0, w: 4, h: 3, noResize: true, content:
+                        ` <div class="card">
+                    <div class="title">
+                    <p class="title_header">My Chart2</p>
+                    <p class="title_footer"><span>Sara</span><span>2022-1-22</span></p>
+                    </div>
+                    <canvas class="myChartStatistics"></canvas>
+                    </div>
+                `,
+                    title: 'Title', manager: 'Sara',
+                    chart: 'bar',
+                    chartDate: 'Color Data'
+                },
+
+                {
+                    id: 2, x: 0, y: 3, w: 12, h: 4, noResize: true, content: `<div class="card">
+                    <div class="title">
+                    <p class="title_header">Title</p>
+                    <p class="title_footer">
+                    <span>Fan</span><span>2022-01-29</span></p>
+                    </div>
+                    </div>`, title: 'Title', manager: 'Fan'
                 },
                 {
-                    id: 2, x: 8, y: 0, w: 4, h: 3, noResize: true, content: `<div class="card">
-                <div class="title">
-                <p class="title_header">Title</p>
-                <p class="title_footer">
-                <span>Amy</span><span>2022-01-27</span></p>
-                </div>
-             </div>`, title: 'Title', manager: 'Amy'
-                },
-                {
-                    id: 3, x: 0, y: 3, w: 12, h: 4, noResize: true, content: `<div class="card">
-                <div class="title">
-                <p class="title_header">Title</p>
-                <p class="title_footer">
-                <span>Fan</span><span>2022-01-29</span></p>
-                </div>
-             </div>`, title: 'Title', manager: 'Fan'
+                    id: 3, x: 8, y: 0, w: 4, h: 3, noResize: true, content: `<div class="card">
+                    <div class="title">
+                    <p class="title_header">Title</p>
+                    <p class="title_footer">
+                    <span>Amy</span><span>2022-01-27</span></p>
+                    </div>
+                    </div>`, title: 'Title', manager: 'Amy'
                 },
                 {
                     id: 4, x: 0, y: 7, w: 6, h: 4, noResize: true, content: `<div class="card">
@@ -68,7 +76,7 @@ export default createStore({
                 <p class="title_footer">
                 <span>Aberforth Dumbledore</span><span>2022-01-29</span></p>
                 </div>
-             </div>`, title: 'title', manager: '	Aberforth Dumbledore'
+             </div>`, title: 'title', manager: 'Aberforth Dumbledore'
                 },
                 {
                     id: 5, x: 6, y: 7, w: 6, h: 7, noResize: true, content: `<div class="card">
@@ -85,7 +93,7 @@ export default createStore({
         get_chart_data({ commit }) {
             const chart_arr = [
                 {
-                    name: 'Color data',
+                    name: 'Color Data',
                     type: "",
                     data: {
                         labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
@@ -113,7 +121,7 @@ export default createStore({
                             },
                         ],
                     },
-                   
+
                 },
                 {
                     name: 'Year Data',
@@ -142,7 +150,7 @@ export default createStore({
                             },
                         ],
                     },
-                    
+
                 },
                 {
                     name: 'Boolean Data',
@@ -165,7 +173,7 @@ export default createStore({
                             },
                         ],
                     },
-                   
+
                 }
             ];
             commit('change_chart_data', chart_arr);

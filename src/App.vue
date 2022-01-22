@@ -19,6 +19,7 @@ export default {
     const store = useStore();
     onMounted(() => {
       store.dispatch("get_box_data");
+      store.dispatch("get_chart_data");
     });
     console.log(store.state);
   },
@@ -26,12 +27,12 @@ export default {
 </script>
 
 <style>
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-body{
+body {
   padding: 20px;
 }
 .app {

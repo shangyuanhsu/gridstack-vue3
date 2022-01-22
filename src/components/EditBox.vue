@@ -151,7 +151,7 @@ export default {
     const created_day = `${year}-${month}-${day}`; //日期形式
 
     const items = reactive({ arr: [] }); //目前有創建的box data
-    const chart_item = reactive({ arr: [] }); //目前有創建的box data
+    const chart_item = reactive({ arr: [] }); //會需要的chart資料
     const new_box_grid = reactive({
       node: {
         x: 0,
@@ -198,7 +198,8 @@ export default {
 
     onMounted(() => {
       items.arr = store.state.box_item.map((item) => item);
-      store.dispatch("get_chart_data");
+      chart_item.arr = store.state.chart_data.map((item) => item);
+
       grid = GridStack.init({
         float: true,
         minRow: 1,
@@ -208,7 +209,6 @@ export default {
       });
 
       add_new_widget(which_size.value);
-      chart_item.arr = store.state.chart_data.map((item) => item);
     });
 
     /**
@@ -248,7 +248,10 @@ export default {
         which_progress.value--;
       }
 
-      if (which_progress.value == 2) {
+      if (
+        which_progress.value == 2 &&
+        (selected_txt.value == "pie" || selected_txt.value == "bar")
+      ) {
         grid.engine.nodes[0].content = `
         <div class="card">
         <div class="title">
@@ -376,8 +379,10 @@ export default {
         content: grid.engine.nodes[0].content,
         title: title.value,
         manager: creator.value,
+        chart: selected_txt.value,
+        chartDate: chart_item.arr[select_index.value].name,
       };
-
+      console.log(grid.engine.nodes[0].content);
       items.arr.push(node);
       store.dispatch("sava_box_data", items.arr);
     };
