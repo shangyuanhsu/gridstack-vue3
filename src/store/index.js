@@ -23,71 +23,40 @@ export default createStore({
         get_box_data({ commit }) {
             const items = [
                 {
-                    id: 0, x: 0, y: 11, w: 4, h: 4, noResize: true, content:
-                        ` <div class="card">
-                        <div class="title">
-                        <p class="title_header">My Chart</p>
-                        <p class="title_footer"><span>Sherry Hsu</span><span>2022-1-22</span></p>
-                        </div>
-                        <canvas class="myChartStatistics"></canvas>
-                        </div>
-                    `,
-                    title: 'Title', manager: 'Sherry Hsu',
-                    chart: 'pie',
-                    chartDate: 'Boolean Data'
+                    "id": 0,
+                    "x": 8,
+                    "y": 0,
+                    "w": 4,
+                    "h": 5,
+                    "noResize": true,
+                    "content": `<div class="card"><div class="title"> <p class="title_header">My Chart Pie</p><p class="title_footer"><span>Sherry Hsu</span><span>2022-1-22</span></p></div><canvas class="myChartStatistics"></canvas></div>`,
+                    "title": "Title",
+                    "manager": "Sherry Hsu",
+                    "chart": "pie",
+                    "chartDate":"Boolean Data"
                 },
                 {
-                    id: 1, x: 4, y: 0, w: 4, h: 3, noResize: true, content:
-                        ` <div class="card">
-                    <div class="title">
-                    <p class="title_header">My Chart2</p>
-                    <p class="title_footer"><span>Sara</span><span>2022-1-22</span></p>
-                    </div>
-                    <canvas class="myChartStatistics"></canvas>
-                    </div>
-                `,
-                    title: 'Title', manager: 'Sara',
-                    chart: 'bar',
-                    chartDate: 'Color Data'
+                    "id": 1, "x": 0, "y": 0, "w": 4, "h": 3, "noResize": true,
+                    "content": `<div class="card"> <div class="title"><p class="title_header">My Chart Bar</p><p class="title_footer"><span>Sara</span><span>2022-1-22</span></p> </div><canvas class="myChartStatistics"></canvas></div>`,
+                    "title": "Title", "manager": "Sara", "chart": "bar", "chartDate": "Color Data"
                 },
+                {
+                    "id": 2, "x": 0, "y": 7, "w": 12, "h": 4, "noResize": true,
+                    "content": `<div class="card"><div class="title"><p class="title_header">Title</p><p class="title_footer"><span>Fan</span><span>2022-01-29</span></p></div></div>`, "title": "Title", "manager": "Fan"
+                },
+                {
+                    "id": 3, "x": 4, "y": 0, "w": 4, "h": 3, "noResize": true,
+                    "content": `<div class="card"><div class="title"> <p class="title_header">My Textarea</p><p class="title_footer"><span>Amy</span><span>2022-01-27</span></p></div><p class="textarea_con">Whether you’ve used a Bullet Journal for years or have never seen one before, the international best-selling book The Bullet Journal Method will show you how to go from passenger to pilot of your life through intentional living.</p></div>`, "title": "Title", "manager": "Amy"
+                },
+                {
+                    "id": 4, "x": 0, "y": 3, "w": 6, "h": 4, "noResize": true,
+                    "content": `<div class="card"><div class="title"><p class="title_header">My Table</p><p class="title_footer"><span>Aberforth Dumbledore</span><span>2022-01-29</span></p></div><table><tr><td>ListA</td><td>ListB</td></tr><tr><td>Edit content</td><td>Edit content</td></tr><tr><td>Edit content</td><td>Edit content</td></tr><tr><td>Edit content</td><td>Edit content</td></tr><tr><td>Edit content</td><td>Edit content</td></tr><tr><td>Edit content</td><td>Edit content</td></tr></table> </div>`, "title": "title", "manager": "Aberforth Dumbledore"
+                },
+                {
+                    "id": 5, "x": 6, "y": 11, "w": 6, "h": 7, "noResize": true,
+                    "content": `<div class="card"><div class="title"><p class="title_header">Title</p><p class="title_footer"><span>Elizabeth Alexandra Mary</span><span>2022-01-29</span></p></div></div>`, "title": "Title", "manager": "Elizabeth Alexandra Mary"
+                }];
 
-                {
-                    id: 2, x: 0, y: 3, w: 12, h: 4, noResize: true, content: `<div class="card">
-                    <div class="title">
-                    <p class="title_header">Title</p>
-                    <p class="title_footer">
-                    <span>Fan</span><span>2022-01-29</span></p>
-                    </div>
-                    </div>`, title: 'Title', manager: 'Fan'
-                },
-                {
-                    id: 3, x: 8, y: 0, w: 4, h: 3, noResize: true, content: `<div class="card">
-                    <div class="title">
-                    <p class="title_header">Title</p>
-                    <p class="title_footer">
-                    <span>Amy</span><span>2022-01-27</span></p>
-                    </div>
-                    </div>`, title: 'Title', manager: 'Amy'
-                },
-                {
-                    id: 4, x: 0, y: 7, w: 6, h: 4, noResize: true, content: `<div class="card">
-                <div class="title">
-                <p class="title_header">Title</p>
-                <p class="title_footer">
-                <span>Aberforth Dumbledore</span><span>2022-01-29</span></p>
-                </div>
-             </div>`, title: 'title', manager: 'Aberforth Dumbledore'
-                },
-                {
-                    id: 5, x: 6, y: 7, w: 6, h: 7, noResize: true, content: `<div class="card">
-                <div class="title">
-                <p class="title_header">Title</p>
-                <p class="title_footer">
-                <span>Elizabeth Alexandra Mary</span><span>2022-01-29</span></p>
-                </div>
-             </div>`, title: 'Title', manager: 'Elizabeth Alexandra Mary'
-                },
-            ];
             commit('change_box_data', items);
         },
         get_chart_data({ commit }) {

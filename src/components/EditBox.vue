@@ -244,7 +244,7 @@ export default {
               title.value == "My title" ||
               creator.value == "Your Name"
             ) {
-              alert("name? or title?");
+              alert("check your name and check your title");
             } else {
               is_go = true;
             }
@@ -385,6 +385,11 @@ export default {
       grid.addWidget(new_box_grid.node); //新的bpx
     };
 
+    /**
+     * 產生table
+     * @param data : array : td的資料
+     * @param table_title : array : 表頭的資料
+     **/
     const change_table_data = (data, table_title) => {
       table_data.arr = data.arr.map((x) => x);
       console.log(table_data.arr, table_title);
@@ -639,5 +644,8 @@ textarea {
 select,
 button {
   padding: 5px 8px;
+}
+tr:nth-child(1) {
+  font-weight: bold;
 }
 </style>

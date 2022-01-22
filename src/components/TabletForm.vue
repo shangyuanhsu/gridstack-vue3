@@ -87,9 +87,6 @@ export default {
 
     // 打完字推到資料中
     const save_con = (index, index_list, con) => {
-      console.log(index);
-      console.log(index_list);
-      console.log(con);
       data_arr.arr[index].list[index_list].name = con;
     };
 
@@ -128,6 +125,7 @@ export default {
       });
     };
 
+    // 資料傳去show到預覽box中
     const new_table_data = () => {
       context.emit("go_show_table", data_arr, data_title);
     };

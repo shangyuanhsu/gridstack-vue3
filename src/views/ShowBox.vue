@@ -36,12 +36,13 @@ export default {
       grid.on("dragstop", () => {
         // (event, element)
         // const node = element.gridstackNode;
-        // console.log(grid.engine.nodes);
+        console.log(grid.engine.nodes);
         items.arr.forEach((box) => {
           const new_node = grid.engine.nodes.filter((item) => box.id === item.id)[0];
           box.x = new_node.x;
           box.y = new_node.y;
         });
+        console.log(JSON.stringify(items.arr));
         store.dispatch("sava_box_data", items.arr);
       });
 
