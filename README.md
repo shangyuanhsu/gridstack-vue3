@@ -1,4 +1,9 @@
-# gridstack
+# gridstack & vue3 project 🐅
+
+### gridstackjs
+https://gridstackjs.com/#
+
+-------------------------------------
 
 ## Project setup
 ```
@@ -20,5 +25,4 @@ npm run build
 npm run lint
 ```
 
-### gridstackjs
-https://gridstackjs.com/#
+
