@@ -95,7 +95,11 @@
             <button @click="add_chart">Add Chart</button>
           </div>
           <div v-else-if="selected_txt == 'tablet'">
-            <TabletForm :data="table_data" @go_show_table="change_table_data" />
+            <TabletForm
+              :data="table_data"
+              :title="data_title"
+              @go_show_table="change_table_data"
+            />
           </div>
         </div>
 
@@ -214,6 +218,10 @@ export default {
       ],
     });
 
+    const data_title = reactive({
+      arr: [{ val: "Table" }, { val: "List" }, { val: "⇉" }, { val: "Set" }],
+    });
+
     onMounted(() => {
       items.arr = store.state.box_item.map((item) => item);
       chart_item.arr = store.state.chart_data.map((item) => item);
@@ -227,6 +235,39 @@ export default {
       });
 
       add_new_widget(which_size.value);
+
+      //修改資料
+      if (store.state.edit_data) {
+        if (store.state.edit_data.w === 4) {
+          which_size.value = 0;
+        } else if (store.state.edit_data.w === 6) {
+          which_size.value = 1;
+        } else if (store.state.edit_data.w === 12) {
+          which_size.value = 2;
+        }
+        title.value = store.state.edit_data.title;
+        creator.value = store.state.edit_data.manager;
+        selected_txt.value = store.state.edit_data.chart;
+        grid.engine.nodes[0].content = store.state.edit_data.content;
+
+        add_new_widget(which_size.value, store.state.edit_data.h);
+
+        if (selected_txt.value == "text") {
+          textarea_text.value = document.querySelector(".textarea_con").innerHTML;
+        }
+        if (selected_txt.value == "pie" || selected_txt.value == "bar") {
+          chart_item.arr.forEach((element, index) => {
+            if (element.name === store.state.edit_data.chartData) {
+              select_index.value = index;
+            }
+          });
+          add_chart();
+        }
+        if (selected_txt.value == "tablet") {
+          table_data.arr = JSON.parse(store.state.edit_data.table_data).arr.map((x) => x);
+          data_title.arr = JSON.parse(store.state.edit_data.data_title).arr.map((x) => x);
+        }
+      }
     });
 
     /**
@@ -270,37 +311,69 @@ export default {
         which_progress.value == 2 &&
         (selected_txt.value == "pie" || selected_txt.value == "bar")
       ) {
-        grid.engine.nodes[0].content = `
-        <div class="card">
-        <div class="title">
-        <p class="title_header">${title.value}</p>
-        <p class="title_footer"><span>${creator.value}</span><span>${created_day}</span></p>
-        </div>
-        <canvas class="myChartStatistics"></canvas>
-        </div>`;
+        if (!store.state.edit_data) {
+          grid.engine.nodes[0].content = `
+          <div class="card">
+          <div class="title">
+          <p class="title_header">${title.value}</p>
+          <p class="title_footer"><span>${
+            creator.value
+          }</span><span>${created_day}</span></p>
+          </div>
+          <canvas class="myChartStatistics"></canvas>
+          </div><div class="edit" data-id="${date.getTime()}">edit</div>`;
+          add_new_widget(which_size.value, grid.engine.nodes[0].h);
+        } else {
+          grid.engine.nodes[0].content = "";
+          grid.engine.nodes[0].content = `
+          <div class="card">
+          <div class="title">
+          <p class="title_header">${title.value}</p>
+          <p class="title_footer"><span>${
+            creator.value
+          }</span><span>${created_day}</span></p>
+          </div>
+          <canvas class="myChartStatistics"></canvas>
+          </div><div class="edit" data-id="${date.getTime()}">edit</div>`;
+          add_new_widget(which_size.value, grid.engine.nodes[0].h);
+        }
+      }
+    };
+
+    /**
+     * 確認創建者與標題輸入的內容
+     **/
+    const check_node = () => {
+      if (store.state.edit_data) {
+        if (selected_txt.value == "pie" || selected_txt.value == "bar") {
+          grid.engine.nodes[0].content = `<div class="card"><div class="title"><p class="title_header">${title.value}</p><p class="title_footer"><span>${creator.value}</span><span>${created_day}</span></p></div>`;
+          grid.engine.nodes[0].content += `<canvas class="myChartStatistics"></canvas>`;
+          grid.engine.nodes[0].content += `</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
+          grid.engine.nodes[0].content += `</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
+
+          add_new_widget(which_size.value, grid.engine.nodes[0].h);
+          add_chart();
+        }
+        if (selected_txt.value == "tablet") {
+          change_table_data(table_data, data_title);
+        }
+      } else {
+        grid.engine.nodes[0].content = `<div class="card"><div class="title"><p class="title_header">${title.value}</p><p class="title_footer"><span>${creator.value}</span><span>${created_day}</span></p></div>`;
+        grid.engine.nodes[0].content += `</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
+        add_new_widget(which_size.value, grid.engine.nodes[0].h);
+      }
+      if (textarea_text.value != "") {
+        //文字的形式
+        grid.engine.nodes[0].content = `<div class="card"><div class="title"><p class="title_header">${title.value}</p><p class="title_footer"><span>${creator.value}</span><span>${created_day}</span></p></div>`;
+        const replace_textarea_text = textarea_text.value.replace(/\n/g, "<br>");
+        grid.engine.nodes[0].content += `<p class="textarea_con">${replace_textarea_text}</p>`;
+        grid.engine.nodes[0].content += `</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
         add_new_widget(which_size.value, grid.engine.nodes[0].h);
       }
     };
 
     /**
-     * 確認同步輸入的內容
-     **/
-    const check_node = () => {
-      grid.engine.nodes[0].content = `<div class="card"><div class="title"><p class="title_header">${title.value}</p><p class="title_footer"><span>${creator.value}</span><span>${created_day}</span></p></div>`;
-
-      if (textarea_text.value != "") {
-        //文字的形式
-        const replace_textarea_text = textarea_text.value.replace(/\n/g, "<br>");
-        grid.engine.nodes[0].content += `<p class="textarea_con">${replace_textarea_text}</p>`;
-      }
-
-      grid.engine.nodes[0].content += `</div>`;
-
-      add_new_widget(which_size.value, grid.engine.nodes[0].h);
-    };
-
-    /**
-     * 選擇內容的形式
+     * textrea放到預覽中
      **/
     const change_content = () => {
       if (selected_txt.value == "text") {
@@ -311,10 +384,12 @@ export default {
         <div class="card">
         <div class="title">
         <p class="title_header">${title.value}</p>
-        <p class="title_footer"><span>${creator.value}</span><span>${created_day}</span></p>
+        <p class="title_footer"><span>${
+          creator.value
+        }</span><span>${created_day}</span></p>
         </div>
         <p class="textarea_con">${replace_textarea_text}</p>
-        </div>`;
+        </div><div class="edit" data-id="${date.getTime()}">edit</div>`;
       }
 
       add_new_widget(which_size.value, grid.engine.nodes[0].h);
@@ -327,11 +402,10 @@ export default {
       if (myChart) {
         myChart.destroy();
       }
-      var ctx = document.querySelector(".myChartStatistics").getContext("2d");
 
+      var ctx = document.querySelector(".myChartStatistics").getContext("2d");
       let config = chart_item.arr[select_index.value];
       config.type = type;
-      console.log(config);
       myChart = new Chart(ctx, config);
     };
 
@@ -377,8 +451,10 @@ export default {
         <div class="card">
         <div class="title">
         <p class="title_header">${title.value}</p>
-        <p class="title_footer"><span>${creator.value}</span><span>${created_day}</span></p>
-        </div></div>`;
+        <p class="title_footer"><span>${
+          creator.value
+        }</span><span>${created_day}</span></p>
+        </div></div><div class="edit" data-id="${date.getTime()}">edit</div>`;
       }
 
       grid.removeAll(true); // 清掉原本的box
@@ -388,18 +464,18 @@ export default {
     /**
      * 產生table
      * @param data : array : td的資料
-     * @param table_title : array : 表頭的資料
+     * @param table_t : array : 表頭的資料
      **/
-    const change_table_data = (data, table_title) => {
+    const change_table_data = (data, table_t) => {
       table_data.arr = data.arr.map((x) => x);
-      console.log(table_data.arr, table_title);
+      data_title.arr = table_t.arr.map((x) => x);
       let html = "<table>";
       html += `<tr>`;
-      table_title.arr.forEach((title, index) => {
+      table_t.arr.forEach((title, index) => {
         if (
           index != 0 &&
-          index != table_title.arr.length - 1 &&
-          index != table_title.arr.length - 2
+          index != table_t.arr.length - 1 &&
+          index != table_t.arr.length - 2
         ) {
           html += `<td>${title.val}</td>`;
         }
@@ -415,9 +491,12 @@ export default {
       html += `
       </table>
       `;
-      console.log(html);
 
-      grid.engine.nodes[0].content = `<div class="card"><div class="title"><p class="title_header">${title.value}</p><p class="title_footer"><span>${creator.value}</span><span>${created_day}</span></p></div> ${html}</div>`;
+      grid.engine.nodes[0].content = `<div class="card"><div class="title"><p class="title_header">${
+        title.value
+      }</p><p class="title_footer"><span>${
+        creator.value
+      }</span><span>${created_day}</span></p></div> ${html}</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
 
       add_new_widget(which_size.value, grid.engine.nodes[0].h);
     };
@@ -440,9 +519,27 @@ export default {
           title: title.value,
           manager: creator.value,
           chart: selected_txt.value,
-          chartDate: chart_item.arr[select_index.value].name,
+          chartData: "",
+          table_data: "",
+          data_title: "",
         };
-        // console.log(grid.engine.nodes[0].content);
+        if (selected_txt.value == "pie" || selected_txt.value == "bar") {
+          node.chartData = chart_item.arr[select_index.value].name;
+        }
+        if (selected_txt.value == "tablet") {
+          node.table_data = JSON.stringify(table_data);
+          node.data_title = JSON.stringify(data_title);
+        }
+
+        if (store.state.edit_data) {
+          items.arr.forEach((element, index) => {
+            if (element.id === store.state.edit_data.id) {
+              node.x = store.state.edit_data.x;
+              node.y = store.state.edit_data.y;
+              items.arr.splice(index, 1);
+            }
+          });
+        }
         items.arr.push(node);
         store.dispatch("sava_box_data", items.arr);
         router.push("/ShowBox");
@@ -469,6 +566,7 @@ export default {
       add_chart,
       change_table_data,
       table_data,
+      data_title,
     };
   },
 };
@@ -479,8 +577,7 @@ export default {
   background: rgb(189, 189, 189);
 }
 .editBox {
-  width: 100%;
-  max-width: 900px;
+  width: 900px;
   margin: 0 auto;
 }
 
@@ -647,5 +744,8 @@ button {
 }
 tr:nth-child(1) {
   font-weight: bold;
+}
+.editBox .edit {
+  display: none;
 }
 </style>

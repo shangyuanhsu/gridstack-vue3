@@ -7,6 +7,7 @@
 <script>
 import { reactive, onMounted } from "vue";
 import { useStore } from "vuex";
+import router from "@/router";
 import Chart from "chart.js/auto";
 import { GridStack } from "gridstack";
 import "gridstack/dist/h5/gridstack-dd-native";
@@ -20,10 +21,10 @@ export default {
     const chart_item = reactive({ arr: [] }); //會需要的chart資料
 
     onMounted(() => {
+      store.dispatch("cancel_edit_data");
       items.arr = store.state.box_item.map((item) => item);
       chart_item.arr = store.state.chart_data.map((item) => item);
-      console.log(items.arr);
-      console.log(chart_item.arr);
+
       grid = GridStack.init({
         float: true,
         minRow: 1,
@@ -36,13 +37,13 @@ export default {
       grid.on("dragstop", () => {
         // (event, element)
         // const node = element.gridstackNode;
-        console.log(grid.engine.nodes);
+
         items.arr.forEach((box) => {
           const new_node = grid.engine.nodes.filter((item) => box.id === item.id)[0];
           box.x = new_node.x;
           box.y = new_node.y;
         });
-        console.log(JSON.stringify(items.arr));
+
         store.dispatch("sava_box_data", items.arr);
       });
 
@@ -50,13 +51,23 @@ export default {
       items.arr.forEach((element) => {
         add_new_widget(element);
       });
+      document.querySelectorAll(".edit").forEach((element) => {
+        element.addEventListener("click", function () {
+          items.arr.forEach((element) => {
+            if (element.id === Number(this.dataset.id)) {
+              store.dispatch("new_edit_data", element);
+            }
+          });
+          router.push("/NewBox");
+        });
+      });
     });
     //產生chart
     let count = 0;
     const show_chart = (item) => {
       var ctx = document.querySelectorAll(".myChartStatistics")[count].getContext("2d");
 
-      let config = chart_item.arr.filter((x) => x.name == item.chartDate)[0];
+      let config = chart_item.arr.filter((x) => x.name == item.chartData)[0];
 
       config.type = item.chart;
 
@@ -66,7 +77,7 @@ export default {
     //產生box
     const add_new_widget = (item) => {
       const node = item;
-      console.log(item);
+
       grid.addWidget(node);
       if (item.chart === "pie" || item.chart === "bar") {
         show_chart(item);
@@ -74,7 +85,6 @@ export default {
     };
 
     return {
-      // myChart,
       chart_item,
     };
   },
@@ -104,7 +114,9 @@ h1 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
 }
-
+.showBox {
+  position: relative;
+}
 .showBox .grid-stack {
   width: 900px;
   min-height: 80vh;
@@ -150,7 +162,6 @@ h1 {
 .grid-stack .title {
   font-weight: bolder;
   background-color: rgb(202, 202, 202);
-
   position: sticky;
   top: 0;
   display: flex;
@@ -171,5 +182,19 @@ h1 {
 }
 .card td {
   padding: 5px;
+}
+.showBox .edit {
+  position: absolute;
+  bottom: 8px;
+  right: 6px;
+  background-color: rgb(46, 46, 46);
+  padding: 4px 6px;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  display: none;
+}
+.showBox .grid-stack-item-content:hover .edit {
+  display: block;
 }
 </style>

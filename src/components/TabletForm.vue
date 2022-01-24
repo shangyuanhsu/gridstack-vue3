@@ -49,12 +49,12 @@ import { reactive, onMounted } from "vue";
 
 export default {
   name: "TabletForm",
-  props: { data: Object },
+  props: { data: Object, title: Object },
   emits: ["go_show_table"],
   setup(props, context) {
     // 標題區
     const data_title = reactive({
-      arr: [{ val: "Table" }, { val: "List" }, { val: "⇉" }, { val: "Set" }],
+      arr: [],
     });
     // 資料結構
     const data_arr = reactive({
@@ -63,6 +63,7 @@ export default {
 
     onMounted(() => {
       data_arr.arr = props.data.arr.map((x) => x);
+      data_title.arr = props.title.arr.map((x) => x);
     });
 
     // 新增資料

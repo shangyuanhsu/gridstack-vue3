@@ -2,7 +2,7 @@
   <div class="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/NewBox">NewBoxData</router-link> |
+      <router-link to="/NewBox">EditBoxData</router-link> |
       <router-link to="/ShowBox">ShowBox</router-link>
     </div>
     <router-view />
@@ -32,14 +32,9 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
-body {
-  padding: 20px;
-}
-.app {
-  width: 920px;
-  margin: 0 auto;
-}
+
 #nav {
+  width: 920px;
   margin: 30px auto 50px auto;
 }
 #nav a {
