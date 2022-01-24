@@ -321,7 +321,7 @@ export default {
           }</span><span>${created_day}</span></p>
           </div>
           <canvas class="myChartStatistics"></canvas>
-          </div><div class="edit" data-id="${date.getTime()}">edit</div>`;
+          </div><div class="delete" data-id="${date.getTime()}">delete</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
           add_new_widget(which_size.value, grid.engine.nodes[0].h);
         } else {
           grid.engine.nodes[0].content = "";
@@ -334,7 +334,7 @@ export default {
           }</span><span>${created_day}</span></p>
           </div>
           <canvas class="myChartStatistics"></canvas>
-          </div><div class="edit" data-id="${date.getTime()}">edit</div>`;
+          </div><div class="delete" data-id="${date.getTime()}">delete</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
           add_new_widget(which_size.value, grid.engine.nodes[0].h);
         }
       }
@@ -348,8 +348,7 @@ export default {
         if (selected_txt.value == "pie" || selected_txt.value == "bar") {
           grid.engine.nodes[0].content = `<div class="card"><div class="title"><p class="title_header">${title.value}</p><p class="title_footer"><span>${creator.value}</span><span>${created_day}</span></p></div>`;
           grid.engine.nodes[0].content += `<canvas class="myChartStatistics"></canvas>`;
-          grid.engine.nodes[0].content += `</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
-          grid.engine.nodes[0].content += `</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
+          grid.engine.nodes[0].content += `</div><div class="delete" data-id="${date.getTime()}">delete</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
 
           add_new_widget(which_size.value, grid.engine.nodes[0].h);
           add_chart();
@@ -359,7 +358,7 @@ export default {
         }
       } else {
         grid.engine.nodes[0].content = `<div class="card"><div class="title"><p class="title_header">${title.value}</p><p class="title_footer"><span>${creator.value}</span><span>${created_day}</span></p></div>`;
-        grid.engine.nodes[0].content += `</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
+        grid.engine.nodes[0].content += `</div><div class="delete" data-id="${date.getTime()}">delete</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
         add_new_widget(which_size.value, grid.engine.nodes[0].h);
       }
       if (textarea_text.value != "") {
@@ -367,7 +366,7 @@ export default {
         grid.engine.nodes[0].content = `<div class="card"><div class="title"><p class="title_header">${title.value}</p><p class="title_footer"><span>${creator.value}</span><span>${created_day}</span></p></div>`;
         const replace_textarea_text = textarea_text.value.replace(/\n/g, "<br>");
         grid.engine.nodes[0].content += `<p class="textarea_con">${replace_textarea_text}</p>`;
-        grid.engine.nodes[0].content += `</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
+        grid.engine.nodes[0].content += `</div><div class="delete" data-id="${date.getTime()}">delete</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
         add_new_widget(which_size.value, grid.engine.nodes[0].h);
       }
     };
@@ -389,7 +388,7 @@ export default {
         }</span><span>${created_day}</span></p>
         </div>
         <p class="textarea_con">${replace_textarea_text}</p>
-        </div><div class="edit" data-id="${date.getTime()}">edit</div>`;
+        </div><div class="delete" data-id="${date.getTime()}">delete</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
       }
 
       add_new_widget(which_size.value, grid.engine.nodes[0].h);
@@ -454,7 +453,7 @@ export default {
         <p class="title_footer"><span>${
           creator.value
         }</span><span>${created_day}</span></p>
-        </div></div><div class="edit" data-id="${date.getTime()}">edit</div>`;
+        </div></div><div class="delete" data-id="${date.getTime()}">delete</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
       }
 
       grid.removeAll(true); // 清掉原本的box
@@ -496,7 +495,7 @@ export default {
         title.value
       }</p><p class="title_footer"><span>${
         creator.value
-      }</span><span>${created_day}</span></p></div> ${html}</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
+      }</span><span>${created_day}</span></p></div> ${html}</div><div class="delete" data-id="${date.getTime()}">delete</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
 
       add_new_widget(which_size.value, grid.engine.nodes[0].h);
     };
@@ -592,10 +591,6 @@ export default {
   border: 1px dotted gray;
 }
 
-.editBox .grid-stack-item-content {
-  background-color: #e5e5e5;
-  border-radius: 8px;
-}
 .grid-stack .title {
   font-weight: bolder;
   background-color: rgb(202, 202, 202);
@@ -745,7 +740,8 @@ button {
 tr:nth-child(1) {
   font-weight: bold;
 }
-.editBox .edit {
+.editBox .edit,
+.editBox .delete {
   display: none;
 }
 </style>

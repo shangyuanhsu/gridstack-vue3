@@ -24,7 +24,11 @@ export default {
       store.dispatch("cancel_edit_data");
       items.arr = store.state.box_item.map((item) => item);
       chart_item.arr = store.state.chart_data.map((item) => item);
+      init();
+    });
 
+    const init = () => {
+      count = 0;
       grid = GridStack.init({
         float: true,
         minRow: 1,
@@ -51,29 +55,51 @@ export default {
       items.arr.forEach((element) => {
         add_new_widget(element);
       });
+
+      //修改
       document.querySelectorAll(".edit").forEach((element) => {
         element.addEventListener("click", function () {
-          items.arr.forEach((element) => {
-            if (element.id === Number(this.dataset.id)) {
-              store.dispatch("new_edit_data", element);
+          items.arr.forEach((element2) => {
+            if (element2.id === Number(this.dataset.id)) {
+              store.dispatch("new_edit_data", element2);
             }
           });
           router.push("/NewBox");
         });
       });
-    });
+      // 刪除
+      document.querySelectorAll(".delete").forEach((element) => {
+        element.addEventListener("click", function () {
+          let title = "";
+          let items_index;
+          items.arr.forEach((element2, index) => {
+            if (element2.id === Number(this.dataset.id)) {
+              title = element2.title;
+              items_index = index;
+            }
+          });
+
+          let ans = confirm(`DELETE "${title}" ?`);
+          if (ans) {
+            items.arr.splice(items_index, 1);
+            store.dispatch("sava_box_data", items.arr);
+            grid.removeAll(true);
+            init();
+          }
+        });
+      });
+    };
+
     //產生chart
     let count = 0;
     const show_chart = (item) => {
       var ctx = document.querySelectorAll(".myChartStatistics")[count].getContext("2d");
-
       let config = chart_item.arr.filter((x) => x.name == item.chartData)[0];
-
       config.type = item.chart;
-
       new Chart(ctx, config);
       count++;
     };
+
     //產生box
     const add_new_widget = (item) => {
       const node = item;
@@ -86,6 +112,7 @@ export default {
 
     return {
       chart_item,
+      init,
     };
   },
 };
@@ -124,7 +151,7 @@ h1 {
   border: 1px dotted gray;
 }
 
-.showBox .grid-stack-item-content {
+.grid-stack-item-content {
   background-color: #e5e5e5;
   border-radius: 8px;
 }
@@ -184,6 +211,7 @@ h1 {
   padding: 5px;
 }
 .showBox .edit {
+  width: 50px;
   position: absolute;
   bottom: 8px;
   right: 6px;
@@ -192,9 +220,27 @@ h1 {
   border-radius: 4px;
   color: white;
   cursor: pointer;
+  text-align: center;
   display: none;
 }
 .showBox .grid-stack-item-content:hover .edit {
+  display: block;
+}
+
+.showBox .delete {
+  width: 50px;
+  position: absolute;
+  bottom: 40px;
+
+  right: 6px;
+  background-color: rgb(137 42 42);
+  padding: 4px 6px;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  display: none;
+}
+.showBox .grid-stack-item-content:hover .delete {
   display: block;
 }
 </style>
