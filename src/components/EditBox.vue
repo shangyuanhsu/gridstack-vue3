@@ -53,8 +53,8 @@
       <!-- template set -->
       <div class="progress_content">
         <div class="content_header">
-          <h2>title</h2>
-          <p>instruction</p>
+          <h2>{{ step_instruction[which_progress].title }}</h2>
+          <p>{{ step_instruction[which_progress].instruction }}</p>
         </div>
         <!-- 第一步 -->
         <div class="step" v-show="which_progress == 0">
@@ -178,6 +178,20 @@ export default {
     const which_progress = ref(0); //進度條在哪一步
     const title = ref("My title"); //box的標題
     const creator = ref("Your Name"); //創建者的名字
+    const step_instruction = reactive([
+      {
+        title: "Hello",
+        instruction: "Let us know who you are and what box to create",
+      },
+      {
+        title: "Type",
+        instruction: "Please select the type of box you want",
+      },
+      {
+        title: "Finish",
+        instruction: "Please select or enter information",
+      },
+    ]);
     const select_option = reactive([
       {
         id: 0,
@@ -204,7 +218,9 @@ export default {
     const textarea_text = ref(""); //文字形式的文字內容
     const select_index = ref(0);
     let grid = null; //創建可以使用box的套件
-    var myChart = null;
+
+    var myChart = null; //chart.js會用到
+
     const table_data = reactive({
       arr: [
         {
@@ -216,11 +232,11 @@ export default {
           list: [{ name: "Edit content" }],
         },
       ],
-    });
+    }); //使用table編輯的引導資料
 
     const data_title = reactive({
       arr: [{ val: "Table" }, { val: "List" }, { val: "⇉" }, { val: "Set" }],
-    });
+    }); //使用table編輯的引導表頭資料
 
     onMounted(() => {
       items.arr = store.state.box_item.map((item) => item);
@@ -550,6 +566,7 @@ export default {
       add_new_widget,
       new_box_grid,
       title,
+      step_instruction,
       check_node,
       which_progress,
       selected_txt,
@@ -743,5 +760,11 @@ tr:nth-child(1) {
 .editBox .edit,
 .editBox .delete {
   display: none;
+}
+.content_header > h2 {
+  margin-left: -2px;
+}
+.content_header > p {
+  margin-top: 8px;
 }
 </style>

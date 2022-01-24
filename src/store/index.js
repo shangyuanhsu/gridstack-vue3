@@ -32,40 +32,33 @@ export default createStore({
         get_box_data({ commit }) {
             const items = [
                 {
-                    "id": 0,
+                    "id":0,
                     "x": 8,
                     "y": 0,
                     "w": 4,
                     "h": 5,
                     "noResize": true,
-                    "content": `<div class="card"><div class="title"> <p class="title_header">My Chart Pie</p><p class="title_footer"><span>Sherry Hsu</span><span>2022-1-22</span></p></div><canvas class="myChartStatistics"></canvas></div><div class="delete" data-id="0">delete</div><div class="edit" data-id="0">edit</div>`,
+                    "content": `<div class="card"><div class="title"> <p class="title_header">My Chart Pie</p><p class="title_footer"><span>Harry Potter</span><span>2022-1-22</span></p></div><canvas class="myChartStatistics"></canvas></div><div class="delete" data-id="0">delete</div><div class="edit" data-id="0">edit</div>`,
                     "title": "My Chart Pie",
-                    "manager": "Sherry Hsu",
+                    "manager": "Harry Potter",
                     "chart": "pie",
                     "chartData": "Boolean Data"
                 },
                 {
                     "id": 1, "x": 0, "y": 0, "w": 4, "h": 3, "noResize": true,
-                    "content": `<div class="card"> <div class="title"><p class="title_header">My Chart Bar</p><p class="title_footer"><span>Sara</span><span>2022-1-22</span></p> </div><canvas class="myChartStatistics"></canvas></div><div class="delete" data-id="1">delete</div><div class="edit" data-id="1">edit</div>`,
-                    "title": "My Chart Bar", "manager": "Sara", "chart": "bar", "chartData": "Color Data"
-                },
-                {
-                    "id": 2, "x": 0, "y": 7, "w": 12, "h": 4, "noResize": true,
-                    "content": `<div class="card"><div class="title"><p class="title_header">Title</p><p class="title_footer"><span>Fan</span><span>2022-01-29</span></p></div></div><div class="delete" data-id="2">delete</div><div class="edit"  data-id="2">edit</div>`, "title": "Title", "manager": "Fan"
+                    "content": `<div class="card"> <div class="title"><p class="title_header">My Chart Bar</p><p class="title_footer"><span>Fan</span><span>2022-1-22</span></p> </div><canvas class="myChartStatistics"></canvas></div><div class="delete" data-id="1">delete</div><div class="edit" data-id="1">edit</div>`,
+                    "title": "My Chart Bar", "manager": "Fan", "chart": "bar", "chartData": "Color Data"
                 },
                 {
                     "id": 3, "x": 4, "y": 0, "w": 4, "h": 3, "noResize": true,
-                    "content": `<div class="card"><div class="title"> <p class="title_header">My Textarea</p><p class="title_footer"><span>Amy</span><span>2022-01-27</span></p></div><p class="textarea_con">Whether you’ve used a Bullet Journal for years or have never seen one before, the international best-selling book The Bullet Journal Method will show you how to go from passenger to pilot of your life through intentional living.</p></div><div class="delete" data-id="3">delete</div><div class="edit"  data-id="3">edit</div>`, "title": "My Textarea", "manager": "Amy", "chart": "text"
+                    "content": `<div class="card"><div class="title"> <p class="title_header">My Textarea</p><p class="title_footer"><span>Sherry</span><span>2022-01-27</span></p></div><p class="textarea_con">Whether you’ve used a Bullet Journal for years or have never seen one before, the international best-selling book The Bullet Journal Method will show you how to go from passenger to pilot of your life through intentional living.</p></div><div class="delete" data-id="3">delete</div><div class="edit"  data-id="3">edit</div>`, "title": "My Textarea", "manager": "Sherry", "chart": "text"
                 },
                 {
-                    "id": 4, "x": 0, "y": 3, "w": 6, "h": 4, "noResize": true,
+                    "id": 4, "x": 0, "y": 4, "w": 6, "h": 3, "noResize": true,
                     "content": `<div class="card"><div class="title"><p class="title_header">My Table</p><p class="title_footer"><span>Aberforth Dumbledore</span><span>2022-01-29</span></p></div><table><tr><td>List</td><td>List2</td></tr><tr><td>Edit content1-1</td><td>Edit content2-1</td></tr><tr><td>Edit content1-2</td><td>Edit content2-2</td></tr><tr><td>Edit content1-3</td><td>Edit content2-3</td></tr>
                     </table></div><div class="delete" data-id="4">delete</div><div class="edit" data-id="4">edit</div>`, "title": "My Table", "manager": "Aberforth Dumbledore", "chart": "tablet", "table_data": `{"arr":[{"index_item":0,"list":[{"name":"Edit content1-1"},{"name":"Edit content2-1"}]},{"index_item":1,"list":[{"name":"Edit content1-2"},{"name":"Edit content2-2"}]},{"index_item":2,"list":[{"name":"Edit content1-3"},{"name":"Edit content2-3"}]}]}`, "data_title": `{"arr":[{"val":"Table"},{"val":"List"},{"val":"List2"},{"val":"⇉"},{"val":"Set"}]}`
                 },
-                {
-                    "id": 5, "x": 6, "y": 11, "w": 6, "h": 7, "noResize": true,
-                    "content": `<div class="card"><div class="title"><p class="title_header">Title</p><p class="title_footer"><span>Elizabeth Alexandra Mary</span><span>2022-01-29</span></p></div></div><div class="delete" data-id="5">delete</div><div class="edit" data-id="5">edit</div>`, "title": "Title", "manager": "Elizabeth Alexandra Mary"
-                }];
+               ];
 
             commit('change_box_data', items);
         },
