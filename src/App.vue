@@ -6,6 +6,7 @@
       <router-link to="/ShowBox">ShowBox</router-link>
     </div>
     <router-view />
+    <footer>shang @ 2022</footer>
   </div>
 </template>
 
@@ -46,5 +47,11 @@ export default {
 #nav a.router-link-exact-active {
   color: black;
   border-bottom: 2px solid black;
+}
+footer {
+  text-align: center;
+  color: rgb(44, 44, 44);
+  margin: 20px 0;
+  font-size: 12px;
 }
 </style>
