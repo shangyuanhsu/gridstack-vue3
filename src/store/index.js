@@ -38,7 +38,16 @@ export default createStore({
                     "w": 4,
                     "h": 5,
                     "noResize": true,
-                    "content": `<div class="card"><div class="title"> <p class="title_header">My Chart Pie</p><p class="title_footer"><span>Harry Potter</span><span>2022-1-22</span></p></div><canvas class="myChartStatistics"></canvas></div><div class="delete" data-id="0">delete</div><div class="edit" data-id="0">edit</div>`,
+                    "content": `
+                    <div class="card">
+                        <div class="title">
+                            <p class="title_header">My Chart Pie</p>
+                            <p class="title_footer"><span>Harry Potter</span><span>2022-1-22</span></p>
+                        </div>
+                        <canvas class="myChartStatistics"></canvas>
+                    </div>
+                    <div class="delete" data-id="0">delete</div>
+                    <div class="edit" data-id="0">edit</div>`,
                     "title": "My Chart Pie",
                     "manager": "Harry Potter",
                     "chart": "pie",
@@ -46,12 +55,30 @@ export default createStore({
                 },
                 {
                     "id": 1, "x": 0, "y": 0, "w": 4, "h": 3, "noResize": true,
-                    "content": `<div class="card"> <div class="title"><p class="title_header">My Chart Bar</p><p class="title_footer"><span>Fan</span><span>2022-1-22</span></p> </div><canvas class="myChartStatistics"></canvas></div><div class="delete" data-id="1">delete</div><div class="edit" data-id="1">edit</div>`,
+                    "content": `
+                    <div class="card"> 
+                        <div class="title">
+                            <p class="title_header">My Chart Bar</p>
+                             <p class="title_footer"><span>Fan</span><span>2022-1-22</span></p> 
+                        </div>
+                        <canvas class="myChartStatistics"></canvas>
+                    </div>
+                    <div class="delete" data-id="1">delete</div>
+                    <div class="edit" data-id="1">edit</div>`,
                     "title": "My Chart Bar", "manager": "Fan", "chart": "bar", "chartData": "Color Data"
                 },
                 {
                     "id": 3, "x": 4, "y": 0, "w": 4, "h": 3, "noResize": true,
-                    "content": `<div class="card"><div class="title"> <p class="title_header">My Textarea</p><p class="title_footer"><span>Sherry</span><span>2022-01-27</span></p></div><p class="textarea_con">Whether you’ve used a Bullet Journal for years or have never seen one before, the international best-selling book The Bullet Journal Method will show you how to go from passenger to pilot of your life through intentional living.</p></div><div class="delete" data-id="3">delete</div><div class="edit"  data-id="3">edit</div>`, "title": "My Textarea", "manager": "Sherry", "chart": "text"
+                    "content": `
+                    <div class="card">
+                        <div class="title"> 
+                            <p class="title_header">My Textarea</p>
+                            <p class="title_footer"><span>Sherry</span><span>2022-01-27</span></p>
+                        </div>
+                        <p class="textarea_con">Whether you’ve used a Bullet Journal for years or have never seen one before, the international best-selling book The Bullet Journal Method will show you how to go from passenger to pilot of your life through intentional living.</p>
+                    </div>
+                    <div class="delete" data-id="3">delete</div>
+                    <div class="edit"  data-id="3">edit</div>`, "title": "My Textarea", "manager": "Sherry", "chart": "text"
                 },
                 {
                     "id": 4, "x": 0, "y": 4, "w": 6, "h": 3, "noResize": true,

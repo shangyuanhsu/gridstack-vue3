@@ -239,6 +239,7 @@ export default {
     }); //使用table編輯的引導表頭資料
 
     onMounted(() => {
+      console.log("edit", grid);
       items.arr = store.state.box_item.map((item) => item);
       chart_item.arr = store.state.chart_data.map((item) => item);
 
@@ -249,7 +250,7 @@ export default {
         column: 12,
         cellHeight: "80px",
       });
-
+      grid.removeAll(true);
       add_new_widget(which_size.value);
 
       //修改資料
@@ -330,27 +331,31 @@ export default {
         if (!store.state.edit_data) {
           grid.engine.nodes[0].content = `
           <div class="card">
-          <div class="title">
-          <p class="title_header">${title.value}</p>
-          <p class="title_footer"><span>${
-            creator.value
-          }</span><span>${created_day}</span></p>
-          </div>
+             <div class="title">
+             <p class="title_header">${title.value}</p>
+             <p class="title_footer"><span>${
+               creator.value
+             }</span><span>${created_day}</span></p>
+             </div>
           <canvas class="myChartStatistics"></canvas>
-          </div><div class="delete" data-id="${date.getTime()}">delete</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
+          </div>
+          <div class="delete" data-id="${date.getTime()}">delete</div>
+          <div class="edit" data-id="${date.getTime()}">edit</div>`;
           add_new_widget(which_size.value, grid.engine.nodes[0].h);
         } else {
           grid.engine.nodes[0].content = "";
           grid.engine.nodes[0].content = `
           <div class="card">
-          <div class="title">
-          <p class="title_header">${title.value}</p>
-          <p class="title_footer"><span>${
-            creator.value
-          }</span><span>${created_day}</span></p>
+             <div class="title">
+                <p class="title_header">${title.value}</p>
+                <p class="title_footer"><span>${
+                  creator.value
+                }</span><span>${created_day}</span></p>
+             </div>
+             <canvas class="myChartStatistics"></canvas>
           </div>
-          <canvas class="myChartStatistics"></canvas>
-          </div><div class="delete" data-id="${date.getTime()}">delete</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
+          <div class="delete" data-id="${date.getTime()}">delete</div>
+          <div class="edit" data-id="${date.getTime()}">edit</div>`;
           add_new_widget(which_size.value, grid.engine.nodes[0].h);
         }
       }
@@ -362,7 +367,12 @@ export default {
     const check_node = () => {
       if (store.state.edit_data) {
         if (selected_txt.value == "pie" || selected_txt.value == "bar") {
-          grid.engine.nodes[0].content = `<div class="card"><div class="title"><p class="title_header">${title.value}</p><p class="title_footer"><span>${creator.value}</span><span>${created_day}</span></p></div>`;
+          grid.engine.nodes[0].content = `
+          <div class="card">
+             <div class="title">
+                <p class="title_header">${title.value}</p>
+                <p class="title_footer"><span>${creator.value}</span><span>${created_day}</span></p>
+              </div>`;
           grid.engine.nodes[0].content += `<canvas class="myChartStatistics"></canvas>`;
           grid.engine.nodes[0].content += `</div><div class="delete" data-id="${date.getTime()}">delete</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
 

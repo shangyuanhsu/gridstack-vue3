@@ -21,6 +21,7 @@ export default {
     const chart_item = reactive({ arr: [] }); //會需要的chart資料
 
     onMounted(() => {
+      console.log("show", grid);
       store.dispatch("cancel_edit_data");
       items.arr = store.state.box_item.map((item) => item);
       chart_item.arr = store.state.chart_data.map((item) => item);
@@ -29,6 +30,7 @@ export default {
 
     const init = () => {
       count = 0;
+
       grid = GridStack.init({
         float: true,
         minRow: 1,
@@ -50,7 +52,7 @@ export default {
 
         store.dispatch("sava_box_data", items.arr);
       });
-
+      grid.removeAll(true);
       //把box渲染到畫面上
       items.arr.forEach((element) => {
         add_new_widget(element);
