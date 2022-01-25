@@ -26,7 +26,7 @@ npm run lint
 ```
 
 ### 🤖
-![messageImage_1643029509806](https://user-images.githubusercontent.com/58197444/150788014-4aeb4a67-4443-4fdb-8570-d53d89563df9.jpeg)
+![localhost_8080_NewBox](https://user-images.githubusercontent.com/58197444/150890874-45287fce-278d-47eb-8cdd-ae2a6d1577d5.png)
 
-![messageImage_1642845050407](https://user-images.githubusercontent.com/58197444/150633832-d7ba8c6a-4104-42cb-adc1-3a7301ab2ccd.jpg)
+![localhost_8080_NewBox (1)](https://user-images.githubusercontent.com/58197444/150890884-847938f1-919e-4056-b468-cb5bb77a8f33.png)
 
