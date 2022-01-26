@@ -87,7 +87,7 @@
           </div>
           <!-- chart -->
           <div v-else-if="selected_txt == 'bar' || selected_txt == 'pie'">
-            <select v-model="select_index">
+            <select v-model="chart_select_index">
               <option v-for="(item, index) in chart_item.arr" :key="index" :value="index">
                 {{ item.name }}
               </option>
@@ -98,7 +98,7 @@
             <TabletForm
               :data="table_data"
               :title="data_title"
-              @go_show_table="change_table_data"
+              @go_show_table="add_table_data"
             />
           </div>
         </div>
@@ -216,7 +216,7 @@ export default {
     ]); //形式的種類
     const selected_txt = ref("no selected"); //選擇哪種形式
     const textarea_text = ref(""); //文字形式的文字內容
-    const select_index = ref(0);
+    const chart_select_index = ref(0); // chart要選哪個資料
     let grid = null; //創建可以使用box的套件
 
     var myChart = null; //chart.js會用到
@@ -238,8 +238,11 @@ export default {
       arr: [{ val: "Table" }, { val: "List" }, { val: "⇉" }, { val: "Set" }],
     }); //使用table編輯的引導表頭資料
 
+    const is_table_chart_click = ref(false); //檢查table and chart是否有資料
+
+    //========================================================================
+
     onMounted(() => {
-      console.log("edit", grid);
       items.arr = store.state.box_item.map((item) => item);
       chart_item.arr = store.state.chart_data.map((item) => item);
 
@@ -250,7 +253,8 @@ export default {
         column: 12,
         cellHeight: "80px",
       });
-      grid.removeAll(true);
+      grid.removeAll(true); //清空gridstack顯示區域的box
+
       add_new_widget(which_size.value);
 
       //修改資料
@@ -262,6 +266,7 @@ export default {
         } else if (store.state.edit_data.w === 12) {
           which_size.value = 2;
         }
+
         title.value = store.state.edit_data.title;
         creator.value = store.state.edit_data.manager;
         selected_txt.value = store.state.edit_data.chart;
@@ -270,20 +275,25 @@ export default {
         add_new_widget(which_size.value, store.state.edit_data.h);
 
         if (selected_txt.value == "text") {
-          textarea_text.value = document.querySelector(".textarea_con").innerHTML;
+          textarea_text.value = document
+            .querySelector(".textarea_con")
+            .innerHTML.replace(/<br\s*\/?>/gi, "\n");
         }
+
         if (selected_txt.value == "pie" || selected_txt.value == "bar") {
           chart_item.arr.forEach((element, index) => {
             if (element.name === store.state.edit_data.chartData) {
-              select_index.value = index;
+              chart_select_index.value = index;
             }
           });
           add_chart();
         }
+
         if (selected_txt.value == "tablet") {
           table_data.arr = JSON.parse(store.state.edit_data.table_data).arr.map((x) => x);
           data_title.arr = JSON.parse(store.state.edit_data.data_title).arr.map((x) => x);
         }
+        is_table_chart_click.value = true;
       }
     });
 
@@ -317,18 +327,26 @@ export default {
           case 2:
             break;
         }
+        // 確定往前
         if (is_go) {
+          if (selected_txt.value != "text") {
+            is_table_chart_click.value = false;
+          }
           which_progress.value++;
         }
       } else {
         which_progress.value--;
+        is_table_chart_click.value = false;
       }
-
+      // 如果到最後一步，圖表要特別處理
       if (
         which_progress.value == 2 &&
         (selected_txt.value == "pie" || selected_txt.value == "bar")
       ) {
+        textarea_text.value = "";
+
         if (!store.state.edit_data) {
+          //新增的狀態
           grid.engine.nodes[0].content = `
           <div class="card">
              <div class="title">
@@ -342,7 +360,9 @@ export default {
           <div class="delete" data-id="${date.getTime()}">delete</div>
           <div class="edit" data-id="${date.getTime()}">edit</div>`;
           add_new_widget(which_size.value, grid.engine.nodes[0].h);
+          add_chart();
         } else {
+          //修改的狀態
           grid.engine.nodes[0].content = "";
           grid.engine.nodes[0].content = `
           <div class="card">
@@ -357,6 +377,7 @@ export default {
           <div class="delete" data-id="${date.getTime()}">delete</div>
           <div class="edit" data-id="${date.getTime()}">edit</div>`;
           add_new_widget(which_size.value, grid.engine.nodes[0].h);
+          add_chart();
         }
       }
     };
@@ -366,6 +387,7 @@ export default {
      **/
     const check_node = () => {
       if (store.state.edit_data) {
+        // 修改資料的狀態
         if (selected_txt.value == "pie" || selected_txt.value == "bar") {
           grid.engine.nodes[0].content = `
           <div class="card">
@@ -380,15 +402,17 @@ export default {
           add_chart();
         }
         if (selected_txt.value == "tablet") {
-          change_table_data(table_data, data_title);
+          add_table_data(table_data, data_title);
         }
       } else {
+        // 新增資料的狀態
         grid.engine.nodes[0].content = `<div class="card"><div class="title"><p class="title_header">${title.value}</p><p class="title_footer"><span>${creator.value}</span><span>${created_day}</span></p></div>`;
         grid.engine.nodes[0].content += `</div><div class="delete" data-id="${date.getTime()}">delete</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
         add_new_widget(which_size.value, grid.engine.nodes[0].h);
       }
+
+      // 文字新增還是修改的狀態都一樣
       if (textarea_text.value != "") {
-        //文字的形式
         grid.engine.nodes[0].content = `<div class="card"><div class="title"><p class="title_header">${title.value}</p><p class="title_footer"><span>${creator.value}</span><span>${created_day}</span></p></div>`;
         const replace_textarea_text = textarea_text.value.replace(/\n/g, "<br>");
         grid.engine.nodes[0].content += `<p class="textarea_con">${replace_textarea_text}</p>`;
@@ -429,9 +453,10 @@ export default {
       }
 
       var ctx = document.querySelector(".myChartStatistics").getContext("2d");
-      let config = chart_item.arr[select_index.value];
+      let config = chart_item.arr[chart_select_index.value];
       config.type = type;
       myChart = new Chart(ctx, config);
+      is_table_chart_click.value = true;
     };
 
     /**
@@ -444,6 +469,7 @@ export default {
       let show_x = 0;
       let show_maxW = 0;
       let show_minW = 0;
+
       //預設的寬度
       switch (size) {
         case 0:
@@ -491,7 +517,7 @@ export default {
      * @param data : array : td的資料
      * @param table_t : array : 表頭的資料
      **/
-    const change_table_data = (data, table_t) => {
+    const add_table_data = (data, table_t) => {
       table_data.arr = data.arr.map((x) => x);
       data_title.arr = table_t.arr.map((x) => x);
       let html = "<table>";
@@ -524,50 +550,62 @@ export default {
       }</span><span>${created_day}</span></p></div> ${html}</div><div class="delete" data-id="${date.getTime()}">delete</div><div class="edit" data-id="${date.getTime()}">edit</div>`;
 
       add_new_widget(which_size.value, grid.engine.nodes[0].h);
+      is_table_chart_click.value = true;
     };
 
     /**
      * 新增並儲存
      **/
     const save = () => {
-      let ans = confirm("Are u sure?");
-      //整理格式
-      if (ans) {
-        let node = {
-          id: date.getTime(), //用時間戳
-          x: grid.engine.nodes[0].x,
-          y: grid.engine.nodes[0].y,
-          w: grid.engine.nodes[0].w,
-          h: grid.engine.nodes[0].h,
-          noResize: true,
-          content: grid.engine.nodes[0].content,
-          title: title.value,
-          manager: creator.value,
-          chart: selected_txt.value,
-          chartData: "",
-          table_data: "",
-          data_title: "",
-        };
-        if (selected_txt.value == "pie" || selected_txt.value == "bar") {
-          node.chartData = chart_item.arr[select_index.value].name;
+      //確認一下有沒有資料
+      if (
+        (textarea_text.value === "" && is_table_chart_click.value === false) ||
+        is_table_chart_click.value === false
+      ) {
+        alert("check ur box");
+      } else {
+        if (selected_txt.value == "text") {
+          change_content();
         }
-        if (selected_txt.value == "tablet") {
-          node.table_data = JSON.stringify(table_data);
-          node.data_title = JSON.stringify(data_title);
-        }
+        let ans = confirm("Are u sure?");
+        if (ans) {
+          //整理格式
+          let node = {
+            id: date.getTime(), //用時間戳
+            x: grid.engine.nodes[0].x,
+            y: grid.engine.nodes[0].y,
+            w: grid.engine.nodes[0].w,
+            h: grid.engine.nodes[0].h,
+            noResize: true,
+            content: grid.engine.nodes[0].content,
+            title: title.value,
+            manager: creator.value,
+            chart: selected_txt.value,
+            chartData: "",
+            table_data: "",
+            data_title: "",
+          };
+          if (selected_txt.value == "pie" || selected_txt.value == "bar") {
+            node.chartData = chart_item.arr[chart_select_index.value].name;
+          }
+          if (selected_txt.value == "tablet") {
+            node.table_data = JSON.stringify(table_data);
+            node.data_title = JSON.stringify(data_title);
+          }
 
-        if (store.state.edit_data) {
-          items.arr.forEach((element, index) => {
-            if (element.id === store.state.edit_data.id) {
-              node.x = store.state.edit_data.x;
-              node.y = store.state.edit_data.y;
-              items.arr.splice(index, 1);
-            }
-          });
+          if (store.state.edit_data) {
+            items.arr.forEach((element, index) => {
+              if (element.id === store.state.edit_data.id) {
+                node.x = store.state.edit_data.x;
+                node.y = store.state.edit_data.y;
+                items.arr.splice(index, 1);
+              }
+            });
+          }
+          items.arr.push(node);
+          store.dispatch("sava_box_data", items.arr);
+          router.push("/ShowBox");
         }
-        items.arr.push(node);
-        store.dispatch("sava_box_data", items.arr);
-        router.push("/ShowBox");
       }
     };
 
@@ -588,9 +626,9 @@ export default {
       which_size,
       control_step,
       chart_item,
-      select_index,
+      chart_select_index,
       add_chart,
-      change_table_data,
+      add_table_data,
       table_data,
       data_title,
     };

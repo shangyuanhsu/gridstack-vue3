@@ -21,7 +21,6 @@ export default {
     const chart_item = reactive({ arr: [] }); //會需要的chart資料
 
     onMounted(() => {
-      console.log("show", grid);
       store.dispatch("cancel_edit_data");
       items.arr = store.state.box_item.map((item) => item);
       chart_item.arr = store.state.chart_data.map((item) => item);
@@ -233,7 +232,6 @@ h1 {
   width: 50px;
   position: absolute;
   bottom: 40px;
-
   right: 6px;
   background-color: rgb(137 42 42);
   padding: 4px 6px;

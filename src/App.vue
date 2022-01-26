@@ -22,7 +22,6 @@ export default {
       store.dispatch("get_box_data");
       store.dispatch("get_chart_data");
     });
-    console.log(store.state);
   },
 };
 </script>
